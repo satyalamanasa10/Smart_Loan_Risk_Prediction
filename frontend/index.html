@@ -1,0 +1,1253 @@
+z<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Smart Loan AI</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <div class="logo">
+            <div class="logo-icon">₹</div>
+
+            <div>
+                <h2>SmartLoan AI</h2>
+                <p>Financial Intelligence</p>
+            </div>
+        </div>
+
+        <nav class="nav-menu">
+
+            <button class="nav-item active" onclick="showSection('dashboard')">
+                <span>⌂</span>
+                Dashboard
+            </button>
+
+            <button class="nav-item" onclick="showSection('prediction')">
+                <span>＋</span>
+                New Prediction
+            </button>
+
+            <button class="nav-item" onclick="showSection('history')">
+                <span>◷</span>
+                Prediction History
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <div class="ai-card">
+                <div class="ai-icon">🤖</div>
+
+                <div>
+                    <h4>AI Financial Assistant</h4>
+                    <p>Smart insights powered by AI</p>
+                </div>
+            </div>
+
+        </div>
+
+    </aside>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+
+        <!-- ================= DASHBOARD ================= -->
+
+        <section id="dashboard" class="page-section active-section">
+
+            <div class="top-header">
+
+                <div>
+                    <p class="welcome-text">Welcome back</p>
+
+                    <h1>Financial Intelligence Dashboard</h1>
+
+                    <p class="subtitle">
+                        Analyze loan eligibility and understand financial risk with AI-powered insights.
+                    </p>
+                </div>
+
+                <button class="primary-btn" onclick="showSection('prediction')">
+                    + New Analysis
+                </button>
+
+            </div>
+
+<!-- ================= DASHBOARD STATISTICS ================= -->
+
+<div class="dashboard-stats">
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            📊
+        </div>
+
+        <div>
+            <p>Total Predictions</p>
+            <h2 id="totalPredictions">0</h2>
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            ✓
+        </div>
+
+        <div>
+            <p>Approved Loans</p>
+            <h2 id="approvedPredictions">0</h2>
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            ✕
+        </div>
+
+        <div>
+            <p>Rejected Loans</p>
+            <h2 id="rejectedPredictions">0</h2>
+        </div>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <div class="stat-icon">
+            🛡️
+        </div>
+
+        <div>
+            <p>Average Risk Score</p>
+            <h2 id="averageRiskScore">0</h2>
+        </div>
+
+    </div>
+
+</div>
+<!-- ============================================================
+     DASHBOARD ANALYTICS
+     ============================================================ -->
+
+<div class="dashboard-analytics">
+
+    <!-- LOAN DECISION OVERVIEW -->
+    <div class="analytics-card">
+
+        <div class="analytics-card-header">
+            <div>
+                <h2>Loan Decision Overview</h2>
+                <p>Approval and rejection distribution</p>
+            </div>
+
+            <div class="analytics-icon">📊</div>
+        </div>
+
+        <div class="decision-overview">
+
+            <div class="decision-row">
+
+                <div class="decision-label">
+                    <span class="decision-dot approved-dot"></span>
+                    <span>Approved</span>
+                </div>
+
+                <strong id="dashboardApprovedCount">0</strong>
+
+            </div>
+
+            <div class="analytics-progress">
+                <div
+                    id="approvedProgress"
+                    class="analytics-progress-fill approved-progress">
+                </div>
+            </div>
+
+
+            <div class="decision-row">
+
+                <div class="decision-label">
+                    <span class="decision-dot rejected-dot"></span>
+                    <span>Not Approved</span>
+                </div>
+
+                <strong id="dashboardRejectedCount">0</strong>
+
+            </div>
+
+            <div class="analytics-progress">
+                <div
+                    id="rejectedProgress"
+                    class="analytics-progress-fill rejected-progress">
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- RISK OVERVIEW -->
+    <div class="analytics-card">
+
+        <div class="analytics-card-header">
+
+            <div>
+                <h2>Risk Overview</h2>
+                <p>Distribution of assessed risk levels</p>
+            </div>
+
+            <div class="analytics-icon">🛡️</div>
+
+        </div>
+
+        <div class="risk-overview">
+
+            <div class="risk-row">
+
+                <span class="risk-name low-risk">
+                    Low
+                </span>
+
+                <div class="risk-mini-bar">
+                    <div
+                        id="lowRiskProgress"
+                        class="risk-mini-fill low-risk-fill">
+                    </div>
+                </div>
+
+                <strong id="lowRiskCount">0</strong>
+
+            </div>
+
+
+            <div class="risk-row">
+
+                <span class="risk-name medium-risk">
+                    Medium
+                </span>
+
+                <div class="risk-mini-bar">
+                    <div
+                        id="mediumRiskProgress"
+                        class="risk-mini-fill medium-risk-fill">
+                    </div>
+                </div>
+
+                <strong id="mediumRiskCount">0</strong>
+
+            </div>
+
+
+            <div class="risk-row">
+
+                <span class="risk-name high-risk">
+                    High
+                </span>
+
+                <div class="risk-mini-bar">
+                    <div
+                        id="highRiskProgress"
+                        class="risk-mini-fill high-risk-fill">
+                    </div>
+                </div>
+
+                <strong id="highRiskCount">0</strong>
+
+            </div>
+
+
+            <div class="risk-row">
+
+                <span class="risk-name very-high-risk">
+                    Very High
+                </span>
+
+                <div class="risk-mini-bar">
+                    <div
+                        id="veryHighRiskProgress"
+                        class="risk-mini-fill very-high-risk-fill">
+                    </div>
+                </div>
+
+                <strong id="veryHighRiskCount">0</strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- LATEST PREDICTION -->
+
+<div class="latest-prediction-card">
+
+    <div class="latest-prediction-header">
+
+        <div>
+            <h2>Latest Prediction</h2>
+            <p>Your most recent loan analysis</p>
+        </div>
+
+        <div class="latest-icon">
+            ⚡
+        </div>
+
+    </div>
+
+
+    <div id="latestPredictionContent">
+
+        <div class="latest-empty">
+
+            <div class="latest-empty-icon">
+                📋
+            </div>
+
+            <h3>No prediction available</h3>
+
+            <p>
+                Create a new loan analysis to see your latest result here.
+            </p>
+
+            <button
+                class="primary-btn"
+                onclick="showSection('prediction')">
+
+                + New Analysis
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+            <!-- Feature Cards -->
+
+            <div class="feature-grid">
+
+                <div class="feature-card">
+                    <div class="feature-icon">🎯</div>
+
+                    <h3>Loan Prediction</h3>
+
+                    <p>
+                        AI-powered loan eligibility prediction based on financial information.
+                    </p>
+                </div>
+
+
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+
+                    <h3>Risk Analysis</h3>
+
+                    <p>
+                        Understand your financial risk using intelligent financial ratios.
+                    </p>
+                </div>
+
+
+                <div class="feature-card">
+                    <div class="feature-icon">💡</div>
+
+                    <h3>Smart Recommendations</h3>
+
+                    <p>
+                        Receive personalized recommendations to improve your financial profile.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <!-- How It Works -->
+
+            <div class="info-card">
+
+                <h2>How SmartLoan AI Works</h2>
+
+                <div class="steps">
+
+                    <div class="step">
+                        <div class="step-number">1</div>
+
+                        <div>
+                            <h3>Enter Financial Details</h3>
+                            <p>Provide basic financial and loan information.</p>
+                        </div>
+                    </div>
+
+
+                    <div class="step">
+                        <div class="step-number">2</div>
+
+                        <div>
+                            <h3>AI Analysis</h3>
+                            <p>Our intelligent system analyzes eligibility and financial risk.</p>
+                        </div>
+                    </div>
+
+
+                    <div class="step">
+                        <div class="step-number">3</div>
+
+                        <div>
+                            <h3>Get Insights</h3>
+                            <p>Receive predictions, risk analysis and personalized recommendations.</p>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- System Status -->
+
+            <div class="status-card">
+
+                <div>
+                    <span class="status-dot"></span>
+                    System Ready
+                </div>
+
+                <p>AI prediction engine is ready for analysis</p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ============================================================
+     NEW PREDICTION
+     ============================================================ -->
+
+<section id="prediction" class="page-section">
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header prediction-page-header">
+
+        <div>
+
+            <p class="welcome-text">
+                New Analysis
+            </p>
+
+            <h1>
+                Loan Eligibility Analysis
+            </h1>
+
+            <p class="subtitle">
+                Enter your financial information to receive an
+                AI-powered loan eligibility and default risk assessment.
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- FORM CONTAINER -->
+
+    <div class="form-container">
+
+        <form id="loanForm">
+
+
+            <!-- ==================================================
+                 SECTION 1 — PERSONAL & EMPLOYMENT
+                 ================================================== -->
+
+            <div class="form-section professional-form-section">
+
+                <div class="form-section-heading">
+
+                    <div class="form-section-icon">
+                        👤
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Personal & Employment
+                        </h2>
+
+                        <p>
+                            Basic information about the applicant
+                            and employment background.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- AGE -->
+
+                    <div class="input-group professional-input">
+
+                        <label for="Age">
+                            Age
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            id="Age"
+                            placeholder="Enter your age"
+                            min="18"
+                            max="100"
+                            required
+                        >
+
+                        <small>
+                            Your current age in years.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- EMPLOYMENT STATUS -->
+
+                    <div class="input-group professional-input">
+
+                        <label for="EmploymentStatus">
+                            Employment Status
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <select
+                            id="EmploymentStatus"
+                            required
+                        >
+
+                            <option value="">
+                                Select employment status
+                            </option>
+
+                            <option value="Employed">
+                                Employed
+                            </option>
+
+                            <option value="Self-Employed">
+                                Self-Employed
+                            </option>
+
+                            <option value="Unemployed">
+                                Unemployed
+                            </option>
+
+                        </select>
+
+                        <small>
+                            Your current employment category.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- EDUCATION -->
+
+                    <div class="input-group professional-input">
+
+                        <label for="EducationLevel">
+                            Education Level
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <select
+                            id="EducationLevel"
+                            required
+                        >
+
+                            <option value="">
+                                Select education level
+                            </option>
+
+                            <option value="High School">
+                                High School
+                            </option>
+
+                            <option value="Associate">
+                                Associate
+                            </option>
+
+                            <option value="Bachelor">
+                                Bachelor
+                            </option>
+
+                            <option value="Master">
+                                Master
+                            </option>
+
+                            <option value="Doctorate">
+                                Doctorate
+                            </option>
+
+                        </select>
+
+                        <small>
+                            Your highest completed education level.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- EXPERIENCE -->
+
+                    <div class="input-group professional-input">
+
+                        <label for="Experience">
+                            Work Experience
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <div class="input-with-unit">
+
+                            <input
+                                type="number"
+                                id="Experience"
+                                placeholder="Example: 5"
+                                min="0"
+                                max="60"
+                                step="0.1"
+                                required
+                            >
+
+                            <span>
+                                Years
+                            </span>
+
+                        </div>
+
+                        <small>
+                            Total professional work experience.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 SECTION 2 — FINANCIAL PROFILE
+                 ================================================== -->
+
+            <div class="form-section professional-form-section">
+
+                <div class="form-section-heading">
+
+                    <div class="form-section-icon">
+                        💰
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Financial Profile
+                        </h2>
+
+                        <p>
+                            Income, credit and existing financial
+                            obligations used for risk assessment.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- ANNUAL INCOME -->
+
+                    <div class="input-group professional-input">
+
+                        <label for="AnnualIncome">
+                            Annual Income
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <div class="input-with-symbol">
+
+                            <span>
+                                ₹
+                            </span>
+
+                            <input
+                                type="number"
+                                id="AnnualIncome"
+                                placeholder="Example: 600000"
+                                min="0"
+                                step="1000"
+                                required
+                            >
+
+                        </div>
+
+                        <small>
+                            Your total yearly income before deductions.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- CREDIT SCORE -->
+
+                    <div class="input-group professional-input">
+
+                        <label for="CreditScore">
+                            Credit Score
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <input
+                            type="number"
+                            id="CreditScore"
+                            placeholder="300 - 850"
+                            min="300"
+                            max="850"
+                            required
+                        >
+
+                        <small>
+                            Enter your current credit score.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- MONTHLY DEBT PAYMENTS -->
+
+                    <div class="input-group professional-input">
+
+                        <label for="MonthlyDebtPayments">
+                            Monthly Debt Payments
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <div class="input-with-symbol">
+
+                            <span>
+                                ₹
+                            </span>
+
+                            <input
+                                type="number"
+                                id="MonthlyDebtPayments"
+                                placeholder="Example: 1000"
+                                min="0"
+                                step="100"
+                                required
+                            >
+
+                        </div>
+
+                        <small>
+                            Total monthly payments for existing debts.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- SAVINGS -->
+
+                    <div class="input-group professional-input">
+
+                        <label for="SavingsAccountBalance">
+                            Savings Balance
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <div class="input-with-symbol">
+
+                            <span>
+                                ₹
+                            </span>
+
+                            <input
+                                type="number"
+                                id="SavingsAccountBalance"
+                                placeholder="Example: 150000"
+                                min="0"
+                                step="1000"
+                                required
+                            >
+
+                        </div>
+
+                        <small>
+                            Current balance available in savings.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 SECTION 3 — LOAN DETAILS
+                 ================================================== -->
+
+            <div class="form-section professional-form-section">
+
+                <div class="form-section-heading">
+
+                    <div class="form-section-icon">
+                        🏦
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Loan Details
+                        </h2>
+
+                        <p>
+                            Information about the requested loan
+                            and current housing situation.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-grid">
+
+
+                    <!-- LOAN AMOUNT -->
+
+                    <div class="input-group professional-input">
+
+                        <label for="LoanAmount">
+                            Loan Amount
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <div class="input-with-symbol">
+
+                            <span>
+                                ₹
+                            </span>
+
+                            <input
+                                type="number"
+                                id="LoanAmount"
+                                placeholder="Example: 500000"
+                                min="1000"
+                                step="1000"
+                                required
+                            >
+
+                        </div>
+
+                        <small>
+                            Amount you want to borrow.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- LOAN DURATION -->
+
+                    <div class="input-group professional-input">
+
+                        <label for="LoanDuration">
+                            Loan Duration
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <div class="input-with-unit">
+
+                            <input
+                                type="number"
+                                id="LoanDuration"
+                                placeholder="Example: 5"
+                                min="1"
+                                max="30"
+                                required
+                            >
+
+                            <span>
+                                Years
+                            </span>
+
+                        </div>
+
+                        <small>
+                            Requested repayment period.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- LOAN PURPOSE -->
+
+                    <div class="input-group professional-input">
+
+                        <label for="LoanPurpose">
+                            Loan Purpose
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <select
+                            id="LoanPurpose"
+                            required
+                        >
+
+                            <option value="">
+                                Select loan purpose
+                            </option>
+
+                            <option value="Home">
+                                Home
+                            </option>
+
+                            <option value="Debt Consolidation">
+                                Debt Consolidation
+                            </option>
+
+                            <option value="Auto">
+                                Vehicle
+                            </option>
+
+                            <option value="Education">
+                                Education
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                        <small>
+                            Main reason for requesting the loan.
+                        </small>
+
+                    </div>
+
+
+
+                    <!-- HOME OWNERSHIP -->
+
+                    <div class="input-group professional-input">
+
+                        <label for="HomeOwnershipStatus">
+                            Home Ownership
+                            <span class="required-star">*</span>
+                        </label>
+
+                        <select
+                            id="HomeOwnershipStatus"
+                            required
+                        >
+
+                            <option value="">
+                                Select ownership status
+                            </option>
+
+                            <option value="Own">
+                                Own
+                            </option>
+
+                            <option value="Rent">
+                                Rent
+                            </option>
+
+                            <option value="Mortgage">
+                                Mortgage
+                            </option>
+
+                            <option value="Other">
+                                Other
+                            </option>
+
+                        </select>
+
+                        <small>
+                            Your current residential ownership status.
+                        </small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 ANALYSIS INFORMATION
+                 ================================================== -->
+
+            <div class="analysis-info-box">
+
+                <div class="analysis-info-icon">
+                    🧠
+                </div>
+
+                <div>
+
+                    <strong>
+                        AI-Powered Financial Assessment
+                    </strong>
+
+                    <p>
+                        Your information is analyzed using a machine
+                        learning model along with financial risk
+                        indicators to estimate loan eligibility and
+                        default risk.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ==================================================
+                 SUBMIT AREA
+                 ================================================== -->
+
+            <div class="form-submit-area">
+
+                <div class="submit-note">
+
+                    <span>
+                        🔒
+                    </span>
+
+                    <p>
+                        Your prediction is processed locally
+                        through the SmartLoan AI system.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="analyze-btn"
+                >
+
+                    <span>
+                        ✨
+                    </span>
+
+                    Analyze My Financial Profile
+
+                    <span class="button-arrow">
+                        →
+                    </span>
+
+                </button>
+
+            </div>
+
+
+        </form>
+
+    </div>
+
+</section>
+
+        <!-- ============================================================
+     PREDICTION RESULTS
+     ============================================================ -->
+
+<section id="results" class="page-section">
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header results-page-header">
+
+        <div>
+
+            <p class="welcome-text">
+                Analysis Complete
+            </p>
+
+            <h1>
+                Loan Assessment Results
+            </h1>
+
+            <p class="subtitle">
+                Review your AI-powered loan eligibility and
+                financial risk assessment.
+            </p>
+
+        </div>
+
+
+        <div class="results-header-actions">
+
+    <button
+        class="secondary-btn"
+        onclick="showSection('history')">
+
+        ← Prediction History
+
+    </button>
+
+
+    <button
+        class="primary-btn"
+        onclick="showSection('prediction')">
+
+        + New Analysis
+
+    </button>
+
+</div>
+
+    </div>
+    <div id="historicalResultBanner" class="historical-result-banner hidden">
+
+    <div class="historical-result-icon">
+        ◷
+    </div>
+
+    <div>
+        <strong>Previous Prediction</strong>
+
+        <p>
+            You are viewing a previously saved loan assessment from your prediction history.
+        </p>
+    </div>
+
+</div>
+
+
+    <!-- RESULT CONTENT -->
+
+    <div id="resultsContent">
+
+        <!-- JavaScript inserts prediction results here -->
+
+    </div>
+
+
+    <!-- DISCLAIMER -->
+
+    <div class="results-disclaimer">
+
+        <div class="disclaimer-icon">
+            ℹ️
+        </div>
+
+        <div>
+
+            <strong>
+                Important Information
+            </strong>
+
+            <p>
+                This result is an AI-based financial assessment
+                created for analysis and demonstration purposes.
+                It should not be considered a final lending decision.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+        <!-- ================= HISTORY ================= -->
+
+        <section id="history" class="page-section">
+
+            <div class="page-header">
+
+                <div>
+                    <p class="welcome-text">Previous Results</p>
+
+                    <h1>Prediction History</h1>
+
+                    <p class="subtitle">
+                        Your recent financial analyses will appear here.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div id="historyContent" class="history-empty">
+
+                <div class="history-icon">◷</div>
+
+                <h2>No Predictions Yet</h2>
+
+                <p>
+                    Your previous loan analyses will be saved here.
+                </p>
+
+                <button class="primary-btn" onclick="showSection('prediction')">
+                    Create New Analysis
+                </button>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
