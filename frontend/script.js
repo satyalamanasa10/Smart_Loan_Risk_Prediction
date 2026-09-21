@@ -2,7 +2,7 @@
 // SMART LOAN AI - FRONTEND JAVASCRIPT
 // ============================================================
 
-const API_URL = "http://127.0.0.1:8000/predict";
+const API_URL = "http://smart-loan-risk-prediction.onreader.com/predict";
 
 
 // ============================================================
