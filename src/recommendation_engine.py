@@ -8,6 +8,10 @@ def generate_recommendations(risk_analysis):
     """
     Generate personalized financial recommendations
     based on the Smart Risk Engine analysis.
+
+    This module does NOT calculate the risk score.
+    It only explains the identified strengths/risk factors
+    and generates actionable recommendations.
     """
 
     # ========================================================
@@ -21,12 +25,19 @@ def generate_recommendations(risk_analysis):
     loan_to_income = risk_analysis["loan_to_income_ratio"]
     savings_to_loan = risk_analysis["savings_to_loan_ratio"]
 
-    risk_factors = risk_analysis["risk_factors"]
-    positive_factors = risk_analysis["positive_factors"]
+    risk_factors = risk_analysis.get(
+        "risk_factors",
+        []
+    )
+
+    positive_factors = risk_analysis.get(
+        "positive_factors",
+        []
+    )
 
 
     # ========================================================
-    # INITIALIZE RECOMMENDATION LISTS
+    # INITIALIZE RESULT LISTS
     # ========================================================
 
     recommendations = []
@@ -35,135 +46,167 @@ def generate_recommendations(risk_analysis):
 
 
     # ========================================================
-    # OVERALL RISK LEVEL RECOMMENDATION
+    # 1. OVERALL RISK LEVEL
     # ========================================================
 
     if risk_level == "Low":
 
         recommendations.append(
-            "Your financial profile appears healthy. "
-            "You are in a relatively strong position for loan consideration."
+            "Your overall financial risk is low. "
+            "Your current financial profile appears relatively stable."
         )
 
-        strengths.append(
-            "Overall financial risk is low."
+        priority_actions.append(
+            "Maintain your current financial habits and repayment discipline."
         )
 
 
     elif risk_level == "Medium":
 
         recommendations.append(
-            "Your financial profile is moderately stable, "
-            "but improving a few financial areas could reduce your risk further."
-        )
-
-        priority_actions.append(
-            "Review your existing debt and loan requirements before applying."
+            "Your financial profile shows a moderate level of risk. "
+            "Improving the areas identified below could strengthen your "
+            "financial position."
         )
 
 
     elif risk_level == "High":
 
         recommendations.append(
-            "Your financial profile has noticeable risk factors. "
-            "Improving key financial indicators before applying is recommended."
+            "Your financial profile contains several risk factors. "
+            "Addressing the identified areas before taking additional credit "
+            "could improve your financial stability."
         )
 
         priority_actions.append(
-            "Focus on reducing financial risk before taking additional credit."
+            "Address the highest-risk financial factors before taking "
+            "additional credit."
         )
 
 
     else:
 
         recommendations.append(
-            "Your current financial profile indicates a high level of risk. "
-            "Consider improving your financial position before applying for a large loan."
+            "Your financial profile indicates very high risk. "
+            "Carefully review your existing financial commitments before "
+            "taking on additional debt."
         )
 
         priority_actions.append(
-            "Avoid taking additional large financial commitments immediately."
+            "Avoid increasing financial commitments until major risk factors "
+            "are addressed."
         )
 
 
     # ========================================================
-    # CREDIT SCORE RECOMMENDATIONS
+    # 2. CREDIT SCORE ANALYSIS
     # ========================================================
 
     if "Low credit score" in risk_factors:
 
         recommendations.append(
-            "Work on improving your credit score by making payments on time "
-            "and maintaining responsible credit usage."
+            "Your credit score is low and may negatively affect your "
+            "borrowing profile. Focus on timely repayments and responsible "
+            "credit usage."
         )
 
         priority_actions.append(
-            "Improve your credit score before applying for a major loan."
+            "Improve your credit repayment history and credit usage."
         )
 
 
     elif "Below-average credit score" in risk_factors:
 
         recommendations.append(
-            "Improving your credit score could increase your chances "
-            "of receiving better loan terms."
+            "Your credit score is below average. Maintaining timely "
+            "repayments and reducing unnecessary credit usage could help "
+            "strengthen your credit profile."
+        )
+
+        priority_actions.append(
+            "Work on improving your credit score."
         )
 
 
     elif "Excellent credit score" in positive_factors:
 
         strengths.append(
-            "Excellent credit score strengthens your borrowing profile."
+            "Excellent credit score supports a strong borrowing profile."
         )
 
 
     elif "Good credit score" in positive_factors:
 
         strengths.append(
-            "Your good credit score supports a healthy borrowing profile."
+            "Good credit score supports a healthy borrowing profile."
+        )
+
+
+    elif "Fair credit score" in positive_factors:
+
+        strengths.append(
+            "Your credit score is fair and provides some support to your "
+            "borrowing profile."
         )
 
 
     # ========================================================
-    # DEBT-TO-INCOME ANALYSIS
+    # 3. DEBT-TO-INCOME ANALYSIS
     # ========================================================
 
     if debt_to_income >= 0.50:
 
         recommendations.append(
-            "Your debt-to-income ratio is high. Consider reducing existing "
-            "monthly debt obligations before applying for another loan."
+            f"Your debt-to-income ratio is {debt_to_income:.0%}, "
+            "which indicates a high existing debt burden relative to income. "
+            "Reducing monthly debt obligations could improve repayment capacity."
         )
 
         priority_actions.append(
-            "Reduce monthly debt obligations."
+            "Reduce existing monthly debt obligations."
         )
 
 
     elif debt_to_income >= 0.35:
 
         recommendations.append(
-            "Your debt-to-income ratio is moderately high. "
-            "Reducing existing debt could improve your financial profile."
+            f"Your debt-to-income ratio is {debt_to_income:.0%}, "
+            "indicating a moderately high debt burden. "
+            "Reducing existing debt could improve financial flexibility."
+        )
+
+        priority_actions.append(
+            "Review and reduce existing debt where possible."
         )
 
 
-    elif debt_to_income < 0.20:
+    elif debt_to_income >= 0.20:
+
+        recommendations.append(
+            f"Your debt-to-income ratio is {debt_to_income:.0%}. "
+            "Your existing debt is manageable but should be monitored "
+            "before taking on additional credit."
+        )
+
+
+    else:
 
         strengths.append(
-            "Low debt burden improves your financial stability."
+            f"Low debt burden with a debt-to-income ratio of "
+            f"{debt_to_income:.0%}."
         )
 
 
     # ========================================================
-    # LOAN-TO-INCOME ANALYSIS
+    # 4. LOAN-TO-INCOME ANALYSIS
     # ========================================================
 
     if loan_to_income >= 0.80:
 
         recommendations.append(
-            "The requested loan amount is high compared to your annual income. "
-            "Consider applying for a smaller loan amount."
+            f"Your requested loan is approximately "
+            f"{loan_to_income:.0%} of your annual income. "
+            "This represents a high loan-to-income level."
         )
 
         priority_actions.append(
@@ -174,70 +217,238 @@ def generate_recommendations(risk_analysis):
     elif loan_to_income >= 0.50:
 
         recommendations.append(
-            "The requested loan amount is moderately high compared to your income. "
-            "A slightly smaller loan may improve affordability."
+            f"Your requested loan is approximately "
+            f"{loan_to_income:.0%} of your annual income. "
+            "A smaller loan amount may improve affordability."
+        )
+
+        priority_actions.append(
+            "Review whether the requested loan amount can be reduced."
         )
 
 
-    elif loan_to_income < 0.20:
+    elif loan_to_income >= 0.20:
+
+        recommendations.append(
+            f"Your requested loan is approximately "
+            f"{loan_to_income:.0%} of your annual income. "
+            "Ensure the repayment obligation remains affordable within "
+            "your overall budget."
+        )
+
+
+    else:
 
         strengths.append(
-            "The requested loan amount appears manageable relative to income."
+            "The requested loan amount is relatively manageable "
+            "compared with annual income."
         )
 
 
     # ========================================================
-    # SAVINGS ANALYSIS
+    # 5. SAVINGS-TO-LOAN ANALYSIS
     # ========================================================
 
     if savings_to_loan < 0.10:
 
         recommendations.append(
-            "Your savings buffer is low compared to the requested loan amount. "
-            "Building emergency savings could improve financial resilience."
+            f"Your savings are approximately "
+            f"{savings_to_loan:.0%} of the requested loan amount. "
+            "This indicates a limited financial buffer."
         )
 
         priority_actions.append(
-            "Increase your emergency savings buffer."
+            "Build a stronger emergency savings buffer."
         )
 
 
     elif savings_to_loan < 0.20:
 
         recommendations.append(
-            "Consider increasing savings before taking on a larger loan."
+            f"Your savings are approximately "
+            f"{savings_to_loan:.0%} of the requested loan amount. "
+            "Increasing your savings could provide greater financial protection."
+        )
+
+        priority_actions.append(
+            "Increase savings before taking on larger financial commitments."
         )
 
 
-    elif savings_to_loan >= 0.50:
+    elif savings_to_loan < 0.50:
+
+        recommendations.append(
+            "Your savings provide some financial support, but maintaining "
+            "additional emergency savings could improve financial resilience."
+        )
+
+
+    else:
 
         strengths.append(
-            "Strong savings provide a useful financial safety buffer."
+            "Strong savings buffer provides additional financial support."
         )
 
 
     # ========================================================
-    # CONVERT POSITIVE FACTORS INTO STRENGTHS
+    # 6. EMPLOYMENT STABILITY
+    # ========================================================
+
+    if "Stable employment" in positive_factors:
+
+        strengths.append(
+            "Stable employment provides a consistent income source."
+        )
+
+
+    elif "Self-employed with moderate income stability" in positive_factors:
+
+        strengths.append(
+            "Self-employment provides an income source, although income "
+            "stability may vary."
+        )
+
+
+    elif "Employment instability" in risk_factors:
+
+        recommendations.append(
+            "Your current employment status may indicate lower income "
+            "stability. Maintaining a reliable income source or providing "
+            "additional financial support information could strengthen "
+            "your financial profile."
+        )
+
+        priority_actions.append(
+            "Strengthen income stability before taking on additional debt."
+        )
+
+
+    # ========================================================
+    # 7. WORK EXPERIENCE
+    # ========================================================
+
+    if "Strong work experience" in positive_factors:
+
+        strengths.append(
+            "Strong work experience supports employment stability."
+        )
+
+
+    elif "Limited work experience" in risk_factors:
+
+        recommendations.append(
+            "Your work experience is relatively limited. Building a stable "
+            "employment history may strengthen your future borrowing profile."
+        )
+
+
+    # ========================================================
+    # 8. LONG LOAN DURATION
+    # ========================================================
+
+    if "Long loan repayment duration" in risk_factors:
+
+        recommendations.append(
+            "The selected repayment duration is relatively long. "
+            "A longer repayment period can extend the period of financial "
+            "commitment, so review the repayment schedule carefully."
+        )
+
+        priority_actions.append(
+            "Review whether a shorter repayment period is affordable."
+        )
+
+
+    # ========================================================
+    # 9. CONVERT EXISTING POSITIVE FACTORS INTO STRENGTHS
     # ========================================================
 
     for factor in positive_factors:
 
-        if factor not in strengths:
+        if factor == "Excellent credit score":
+            continue
 
+        if factor == "Good credit score":
+            continue
+
+        if factor == "Fair credit score":
+            continue
+
+        if factor == "Stable employment":
+            continue
+
+        if factor == "Self-employed with moderate income stability":
+            continue
+
+        if factor == "Strong work experience":
+            continue
+
+        if factor == "Low debt burden":
+            continue
+
+        if factor == "Loan amount is manageable compared to income":
+            continue
+
+        if factor == "Strong savings buffer":
+            continue
+
+        if factor not in strengths:
             strengths.append(factor)
 
 
     # ========================================================
-    # REMOVE DUPLICATES
+    # 10. HANDLE NO-SPECIFIC-RISK SITUATION
     # ========================================================
 
-    recommendations = list(dict.fromkeys(recommendations))
-    strengths = list(dict.fromkeys(strengths))
-    priority_actions = list(dict.fromkeys(priority_actions))
+    if not risk_factors and risk_level == "Low":
+
+        recommendations.append(
+            "No major financial risk factors were identified by the "
+            "current risk analysis."
+        )
 
 
     # ========================================================
-    # FINAL RESULT
+    # 11. GENERAL MAINTENANCE ADVICE FOR LOW RISK
+    # ========================================================
+
+    if risk_level == "Low":
+
+        recommendations.append(
+            "Continue maintaining timely repayments, responsible credit "
+            "usage, and an adequate savings buffer."
+        )
+
+
+    # ========================================================
+    # 12. REMOVE DUPLICATES
+    # ========================================================
+
+    recommendations = list(
+        dict.fromkeys(recommendations)
+    )
+
+    strengths = list(
+        dict.fromkeys(strengths)
+    )
+
+    priority_actions = list(
+        dict.fromkeys(priority_actions)
+    )
+
+
+    # ========================================================
+    # 13. LIMIT EXCESSIVE REPETITION
+    # ========================================================
+
+    # Keep the output useful and readable for the dashboard.
+    recommendations = recommendations[:7]
+    strengths = strengths[:7]
+    priority_actions = priority_actions[:5]
+
+
+    # ========================================================
+    # 14. FINAL RESULT
     # ========================================================
 
     return {

@@ -173,11 +173,6 @@ function savePredictionToHistory(result, inputData) {
 
     // Keep only latest 20 predictions
 
-    if (history.length > 20) {
-        history = history.slice(-20);
-    }
-
-
     localStorage.setItem(
         "loanPredictionHistory",
         JSON.stringify(history)
@@ -972,10 +967,9 @@ function displayHistory() {
 
 
         const loanPurpose =
-            input.loan_purpose ||
-            "Not specified";
-
-
+            input.loan_purpose === "Auto"
+                ? "Vehicle"
+                : (input.loan_purpose || "Not specified");
         // ----------------------------------------------------
         // HISTORY CARD
         // ----------------------------------------------------
